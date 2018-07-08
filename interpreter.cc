@@ -60,25 +60,8 @@ const char interpreter::GG[] = "\n[Chorus]\n"
   "Rather go and buy Balmains, ayy (huh?)\n"
   "Gucci gang, Gucci gang, Gucci gang (Gucci gang)\n\n";
 
-interpreter::interpreter(bool debug)
+Interpreter::Interpreter(bool debug)
   : lst("null") {
-  if (!debug) {
-    std::cout << "   _____         _ ___                        _"
-              << "_______ ______ "
-              << std::endl
-              << "  |_   _|__  ___| | _ ) _____ __"
-              << "     ____    /_  __/ // / __ \\"
-              << std::endl
-              << "    | |/ _ \\/ _ \\ | _ \\/ _ \\ \\ /"
-              << "    /___/     / / / _  / /_/ / "
-              << std::endl
-              << "    |_|\\___/\\___/_|___/\\___/_\\_\\"
-              << "             /_/ /_//_/\\____/ \n"
-              << "                                  \n"
-              << "\nver \e[7;32m 0.3.4.20180308.2139 - Kaio-ken \e[0m\n"
-              << "realizzato da THO in C++14 07/12/2017 - 22/02/2018\n"
-              << "run \e[7m:help\e[0m for more!\n\n";
-  }
   infos[":debug"] = "comincia una sessione di debug";
   infos[":nodebug"] = "finisce la sessione di debug";
   infos[":help"] = "mostra queste informazioni";
@@ -118,13 +101,13 @@ interpreter::interpreter(bool debug)
   tab = 0;
 }
 
-bool interpreter::add(std::string x, Function funct, std::string info) {
+bool Interpreter::add(std::string x, Function funct, std::string info) {
   functions[x] = funct;
   infos[x] = info;
   return (functions.find(x) != functions.end());
 }
 
-bool interpreter::parse(std::string start, bool recursive) {
+bool Interpreter::parse(std::string start, bool recursive) {
   const std::string str = trim(start);
   std::string ret = "";
 
@@ -195,21 +178,21 @@ bool interpreter::parse(std::string start, bool recursive) {
   return false;
 }
 
-void interpreter::debug() {
+void Interpreter::debug() {
   lst = Tf;
   dbg = true;
 }
 
-void interpreter::nodebug() {
+void Interpreter::nodebug() {
   lst = Tf;
   dbg = false;
 }
 
-std::string interpreter::getRet() {
+std::string Interpreter::getRet() {
   return lst;
 }
 
-bool interpreter::isFunct(std::string input) {
+bool Interpreter::isFunct(std::string input) {
   const size_t openP = input.find('(');
   const size_t closeP = input.find_last_of(')');
 

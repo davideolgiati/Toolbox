@@ -16,9 +16,9 @@
 typedef std::function< bool(std::string, std::string * const) > Function;
 typedef std::unordered_map<std::string, std::string> stringmap;
 
-class interpreter {
+class Interpreter {
  public:
-  interpreter(bool debug = false);
+  Interpreter(bool debug = false);
   bool add(std::string x, Function funct, std::string info = "");
   bool parse(std::string start, bool recursive = false);
   void debug();
