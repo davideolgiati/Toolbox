@@ -1,6 +1,6 @@
 // Copyright 2018 Davide Olgiati
 
-#include "header/math.h"
+#include "Include/math.h"
 
 bool sum(const std::string input, std::string * const output) {
   if ("" == input) {

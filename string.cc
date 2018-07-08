@@ -1,6 +1,6 @@
 // Copyright 2018 Davide Olgiati
 
-#include "header/string.h"
+#include "Include/string.h"
 
 bool ciao(std::string input, std::string * const output) {
   std::vector<std::string> partial;

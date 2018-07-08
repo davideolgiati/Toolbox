@@ -1,6 +1,6 @@
 // Copyright 2018 Davide Olgiati
 
-#include "header/interpreter.h"
+#include "Include/interpreter.h"
 
 const char interpreter::T[] = "true.";
 const char interpreter::Tf[] = "\e[1;7;32mtrue.\e[0m";

@@ -1,9 +1,9 @@
 // Copyright 2018 Davide Olgiati
 
-#include "include/header/interpreter.h"
-#include "include/header/math.h"
-#include "include/header/string.h"
-#include "include/header/debug.h"
+#include "Include/interpreter.h"
+#include "Include/math.h"
+#include "Include/string.h"
+#include "Include/debug.h"
 
 bool populate(interpreter* const I);
 

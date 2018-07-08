@@ -1,7 +1,7 @@
 // Copyright 2018 Davide Olgiati
 
-#include "header/debug.h"
-#include "header/catch.hpp"
+#include "Include/debug.h"
+#include "Include/catch.hpp"
 
 bool runTests() {
   return Catch::Session().run();
