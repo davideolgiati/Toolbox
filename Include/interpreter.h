@@ -14,7 +14,6 @@
 #include "tools.h"
 #include "math.h"
 #include "string.h"
-#include "debug.h"
 
 
 typedef std::function< bool(std::string, std::string * const) > Function;

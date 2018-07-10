@@ -32,6 +32,7 @@ void UI::Input(){
     std::ios_base::sync_with_stdio(false);
     std::cin.tie(NULL);
     std::fflush(stdin);
+    std::cout << ((res) ? ("[\e[32mT\e[0m] >> ") : ("[\e[31mT\e[0m] >> "));
     std::getline(std::cin, str);
     if (str == ":exit"){
         stay = false;
@@ -39,7 +40,6 @@ void UI::Input(){
         res = Engine.parse(str);
         std::cout << ((res) ? ("\n" + str + " = " + Engine.getRet()) :
                       (Engine.getRet())) << std::endl << std::endl;
-        std::cout << ((res) ? ("[\e[32mT\e[0m] >> ") : ("[\e[31mT\e[0m] >> "));
     }
 }
 

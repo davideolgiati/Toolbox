@@ -4,6 +4,7 @@
 #define _UI_H
 
 #include "interpreter.h"
+#include "debug.h"
 
 class UI {
  public:

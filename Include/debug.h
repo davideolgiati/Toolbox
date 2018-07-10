@@ -10,8 +10,8 @@
 #define FORMAT(x) x + "\n\e[1;7;32mtrue.\e[0m"
 #define Eq Catch::Matchers::Equals
 
-extern void fail(Interpreter* const I, std::string test, std::string desc);
-extern void pass(Interpreter* const I, std::string test, std::string result, std::string desc);
+extern void fail(Interpreter * const I, std::string test, std::string desc);
+extern void pass(Interpreter * const I, std::string test, std::string result, std::string desc);
 extern bool runTests();
 
 #endif
