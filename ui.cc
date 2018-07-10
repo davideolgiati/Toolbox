@@ -20,8 +20,6 @@ UI::UI(bool debug){
                   << "\nver \e[7;32m 0.3.4.20180308.2139 - Kaio-ken \e[0m\n"
                   << "realizzato da THO in C++14 07/12/2017 - 22/02/2018\n"
                   << "run \e[7m:help\e[0m for more!\n\n";
-    } else {
-        runTests();
     }
 }
 
@@ -37,12 +35,20 @@ void UI::Input(){
     if (str == ":exit"){
         stay = false;
     } else {
-        res = Engine.parse(str);
-        std::cout << ((res) ? ("\n" + str + " = " + Engine.getRet()) :
-                      (Engine.getRet())) << std::endl << std::endl;
+        res = Engine->parse(str);
+        std::cout << ((res) ? ("\n" + str + " = " + Engine->getRet()) :
+                      (Engine->getRet())) << std::endl << std::endl;
     }
 }
 
 bool UI::getState(){
     return stay;
+}
+
+void UI::debug() {
+    runTests();
+}
+
+UI::~UI() {
+    delete Engine;
 }

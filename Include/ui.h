@@ -9,13 +9,15 @@
 class UI {
  public:
     UI(bool debug);
+    ~UI();
     void Input();
     bool getState();
+    void debug();
     
  private:
     bool populate(Interpreter* const I);
     
-    Interpreter Engine;
+    Interpreter * Engine;
     bool stay;
 };
 
