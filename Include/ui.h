@@ -4,13 +4,22 @@
 #define _UI_H
 
 #include "interpreter.h"
+#include "math.h"
+#include "string.h"
+#include "debug.h"
 
-class ui {
+
+class UI {
  public:
-    ui(bool debug);
+    UI(bool debug);
+    void Input();
+    bool getState();
     
  private:
+    bool populate(Interpreter* const I);
+    
     Interpreter Engine;
+    bool stay;
 };
 
 #endif /* ui_hpp */

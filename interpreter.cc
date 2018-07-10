@@ -2,11 +2,11 @@
 
 #include "Include/interpreter.h"
 
-const char interpreter::T[] = "true.";
-const char interpreter::Tf[] = "\e[1;7;32mtrue.\e[0m";
-const char interpreter::F[] = "false.";
-const char interpreter::Ff[] = "\e[1;7;31mfalse.\e[0m";
-const char interpreter::GG[] = "\n[Chorus]\n"
+const char Interpreter::T[] = "true.";
+const char Interpreter::Tf[] = "\e[1;7;32mtrue.\e[0m";
+const char Interpreter::F[] = "false.";
+const char Interpreter::Ff[] = "\e[1;7;31mfalse.\e[0m";
+const char Interpreter::GG[] = "\n[Chorus]\n"
   "Gucci gang, Gucci gang, Gucci gang, Gucci gang (Gucci gang)\n"
   "Gucci gang, Gucci gang, Gucci gang (Gucci gang)\n"
   "Spend three racks on a new chain (yuh)\n"
@@ -232,7 +232,7 @@ bool Interpreter::isFunct(std::string input) {
   return functions[funct](lst, &lst);
 }
 
-bool interpreter::isAssign(std::string input) {
+bool Interpreter::isAssign(std::string input) {
   debug("checking if [" + input + "] is an assignament");
 
   // Strtok
@@ -285,7 +285,7 @@ bool interpreter::isAssign(std::string input) {
   return false;
 }
 
-bool interpreter::isAtoms(const std::string input) {
+bool Interpreter::isAtoms(const std::string input) {
   bool ret = true;
 
   // Strtok
@@ -359,7 +359,7 @@ bool interpreter::isAtoms(const std::string input) {
   return ret;
 }
 
-bool interpreter::isAtom(const std::string args) {
+bool Interpreter::isAtom(const std::string args) {
   debug("checking if [" + args + "] is atomic");
   tab++;
 
@@ -390,7 +390,7 @@ bool interpreter::isAtom(const std::string args) {
   return test;
 }
 
-void interpreter::debug(std::string str) {
+void Interpreter::debug(std::string str) {
   if (dbg) {
     std::string tabs = "";
     for (unsigned int i = 0; i < tab; i++) {
@@ -403,7 +403,7 @@ void interpreter::debug(std::string str) {
   }
 }
 
-std::string interpreter::expand(const std::string x) {
+std::string Interpreter::expand(const std::string x) {
   const std::string args = trim(x);
 
   if ('[' == args[0] && ']' == args.back()) {
@@ -443,14 +443,14 @@ std::string interpreter::expand(const std::string x) {
         const int64_t end = std::atoi(tok[1].c_str());
 
         if (start > end) {
-          for (int i = end; i <= start; ++i) {
+          for (int64_t i = end; i <= start; ++i) {
             ret += std::to_string(i);
             if (i != start) {
               ret += ", ";
             }
           }
         } else {
-          for (int i = start; i <= end; ++i) {
+          for (int64_t i = start; i <= end; ++i) {
             ret += std::to_string(i);
             if (i != end) {
               ret += ", ";
@@ -467,7 +467,7 @@ std::string interpreter::expand(const std::string x) {
   return x;
 }
 
-int interpreter::isBalanced(std::string str) {
+int Interpreter::isBalanced(std::string str) {
   int i = 0;
   for (size_t x = 0; x < str.length() && i > -1; x++) {
     switch (str[x]) {
@@ -484,10 +484,10 @@ int interpreter::isBalanced(std::string str) {
   return i;
 }
 
-std::string interpreter::mapinfo() {
+std::string Interpreter::mapinfo() {
   std::stringstream out;
   std::vector<std::string> VoS;
-  size_t max_length = 40;
+  int max_length = 40;
 
   for (stringmap::iterator iter = infos.begin();
        iter != infos.end();
@@ -512,7 +512,7 @@ std::string interpreter::mapinfo() {
   return "\n\n" + out.str();
 }
 
-std::string interpreter::varinfo() {
+std::string Interpreter::varinfo() {
   std::stringstream out;
   out << std::endl;
 
