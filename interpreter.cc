@@ -99,6 +99,7 @@ Interpreter::Interpreter(bool debug)
   varMap["toolbox_OS"] = base;
   dbg = false;
   tab = 0;
+  populate();
 }
 
 bool Interpreter::add(std::string x, Function funct, std::string info) {
@@ -190,6 +191,58 @@ void Interpreter::nodebug() {
 
 std::string Interpreter::getRet() {
   return lst;
+}
+
+bool Interpreter::populate() {
+    bool ret = true;
+    
+    ret &= add("Ciao",
+                  ciao,
+                  "scrive Ciao <arg>");
+    ret &= add("ReverseStr",
+                  ReverseStr,
+                  "scrive <arg> al contrario");
+    ret &= add("Length",
+                  length,
+                  "ritorna la lunghrzza di <arg>");
+    ret &= add("+",
+                  sum,
+                  "somma un numero variabile di argomenti >= 0");
+    ret &= add("*",
+                  mul,
+                  "moltiplica un numero variabile di argomenti >= 0");
+    ret &= add("OverArrayCiao",
+                  OverArrayCiao,
+                  "applica la funzione \"ciao\" su un array");
+    ret &= add("ReverseArray",
+                  ReverseArray,
+                  "rigira l'array");
+    ret &= add("/",
+                  divide,
+                  "divide un numero variabile di argomenti, eventualmente 0");
+    ret &= add("OverArrayReverseStr",
+                  OverArrayReverseStr,
+                  "applica la funzione reverse su un array");
+    ret &= add("OrderArray",
+                  OrderArray,
+                  "ordina un array");
+    ret &= add("Sqrt",
+                  squareroot,
+                  "ritorna la radice quadrata degli argomenti, eventualmente 1");
+    ret &= add("Binomial",
+                  binomial,
+                  "ritorna il binomiale degli argomenti, 2");
+    // I.add("log",
+    //       logarithm,
+    //       "ritorna il logaritmo naturale degli argomenti, eventualmente 1");
+    // I.add("log2",
+    //       logarithm2,
+    //       "ritorna il logaritmo base 2 degli argomenti, eventualmente 1");
+    // I.add("log10",
+    //       logarithm10,
+    //       "ritorna il logaritmo base 10 degli argomenti, eventualmente 1");
+    
+    return ret;
 }
 
 bool Interpreter::isFunct(std::string input) {

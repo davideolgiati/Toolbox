@@ -7,7 +7,7 @@ bool runTests() {
   return Catch::Session().run();
 }
 
-void fail(interpreter* const I,
+void fail(Interpreter* const I,
           std::string test,
           std::string desc = "") {
   CHECK_FALSE(I->parse(test));
@@ -18,7 +18,7 @@ void fail(interpreter* const I,
   }
 }
 
-void pass(interpreter* const I,
+void pass(Interpreter* const I,
           std::string test,
           std::string result,
           std::string desc = "") {
@@ -34,9 +34,8 @@ void pass(interpreter* const I,
 TEST_CASE("Toolbox Function ciao Test", "[ciao]") {
   TITLE("Toolbox Function ciao Test");
 
-  interpreter I(true);
-  populate(&I);
-
+  Interpreter I(true);
+    
   pass(&I, "Ciao(Davide)", "Ciao Davide");
   fail(&I, "Caio(Davide)");
   fail(&I, "Ciao([1:100])");
@@ -51,8 +50,7 @@ TEST_CASE("Toolbox Function ciao Test", "[ciao]") {
 TEST_CASE("Toolbox String function Test", "[TsF]") {
   TITLE("Toolbox string funcions Test");
 
-  interpreter I(true);
-  populate(&I);
+  Interpreter I(true);
 
   fail(&I, "Length([1:10]");
   fail(&I, "Length([)");
@@ -77,9 +75,8 @@ TEST_CASE("Toolbox String function Test", "[TsF]") {
 TEST_CASE("Toolbox Array generation Test", "[array]") {
   TITLE("Toolbox array generation Test");
 
-  interpreter I(true);
-  populate(&I);
-
+  Interpreter I(true);
+    
   fail(&I, "[a:b");
   fail(&I, "[1:3");
   fail(&I, "[a:b]");
@@ -108,8 +105,7 @@ TEST_CASE("Toolbox Array generation Test", "[array]") {
 TEST_CASE("Toolbox math function Test", "[MF]") {
   TITLE("Toolbox math funcions Test");
 
-  interpreter I(true);
-  populate(&I);
+  Interpreter I(true);
 
   pass(&I, "+()", "0");
   pass(&I, "*()", "1");
@@ -131,8 +127,7 @@ TEST_CASE("Toolbox math function Test", "[MF]") {
 TEST_CASE("Toolbox function over Array Test", "[FoA]") {
   TITLE("Toolbox funcions over Array Test");
 
-  interpreter I(true);
-  populate(&I);
+  Interpreter I(true);
 
   pass(&I, "*([1:5])", "120");
   pass(&I, "+([1:10])", "55");
@@ -153,8 +148,7 @@ TEST_CASE("Toolbox function over Array Test", "[FoA]") {
 TEST_CASE("Toolbox const Test", "[FoA]") {
   TITLE("Toolbox const Test");
 
-  interpreter I(true);
-  populate(&I);
+  Interpreter I(true);
 
   pass(&I, "G", "6.673e-11");
   pass(&I, "e", "2.718281828459045235360287471352662498");
@@ -164,8 +158,7 @@ TEST_CASE("Toolbox const Test", "[FoA]") {
 }
 
 TEST_CASE("Toolbox Assignment Test", "[TA]") {
-  interpreter I(true);
-  populate(&I);
+  Interpreter I(true);
 
   SECTION("value assignament") {
     TITLE("Toolbox Assignament Test");
@@ -198,8 +191,7 @@ TEST_CASE("Toolbox Assignment Test", "[TA]") {
 TEST_CASE("Toolbox null Function Test", "[null]") {
   TITLE("Toolbox null Function Test");
 
-  interpreter I(true);
-  populate(&I);
+  Interpreter I(true);
 
   fail(&I, nullptr, "nullstring");
   fail(&I, "\0", "nullstring 2");

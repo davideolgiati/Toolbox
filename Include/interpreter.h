@@ -12,6 +12,10 @@
 #include <vector>
 #include <chrono>
 #include "tools.h"
+#include "math.h"
+#include "string.h"
+#include "debug.h"
+
 
 typedef std::function< bool(std::string, std::string * const) > Function;
 typedef std::unordered_map<std::string, std::string> stringmap;
@@ -33,6 +37,7 @@ class Interpreter {
 
   typedef std::unordered_map<std::string, Argument> varmap;
 
+  bool populate();
   bool isFunct(std::string input);
   bool isAssign(std::string input);
   bool isAtoms(const std::string input);

@@ -4,7 +4,6 @@
 
 int main(int argc, char* argv[]) {
   UI *Interface;
-  int res = 0;
   if (argc < 2) {
       Interface = new UI(false);
       while (Interface->getState()) {
@@ -12,7 +11,7 @@ int main(int argc, char* argv[]) {
       }
   } else {
     if (std::string(argv[1]) == "-d") {
-      res = runTests();
+      Interface = new UI(true);
     } else {
       std::cout << "Invalid argument: " << argv[1]
                 << std::endl
@@ -21,8 +20,7 @@ int main(int argc, char* argv[]) {
                 << std::endl
                 << "-d : run the interpreter debug"
                 << "<empty> : run the interpreter";
-      res = -1;
     }
   }
-  return res;
+  return 0;
 }

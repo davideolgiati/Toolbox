@@ -4,10 +4,6 @@
 #define _UI_H
 
 #include "interpreter.h"
-#include "math.h"
-#include "string.h"
-#include "debug.h"
-
 
 class UI {
  public:
