@@ -14,51 +14,8 @@ const char Interpreter::GG[] = "\n[Chorus]\n"
   "I fuck a bitch, I forgot her name (brr, yuh)\n"
   "I can't buy a bitch no wedding ring (ooh)\n"
   "Rather go and buy Balmains (brr)\n"
-  "Gucci gan(delete(rest x))g, Gucci gang, Gucci gang (Gucci gang)\n"
-  "Gucci gang, Gucci gang, Gucci gang, Gucci gang (Gucci gang)\n"
   "Gucci gang, Gucci gang, Gucci gang (Gucci gang)\n"
-  "Spend three racks on a new chain (huh?)\n"
-  "My bitch love do cocaine, ooh (brr)\n"
-  "I fuck a bitch, I forgot her name, yuh (yuh, yuh)\n"
-  "I can't buy no bitch no wedding ring, ooh (nope)\n"
-  "Rather go and buy Balmains, ayy (brr)\n"
-  "Gucci gang, Gucci gang, Gucci gang (Gucci gang)\n"
-  "\n"
-  "[Verse]\n"
-  "My lean cost more than your rent, ooh (it do)\n"
-  "Your momma still live in a tent, yuh (brr)\n"
-  "Still slangin' dope in the 'jects, huh? (yeah)\n"
-  "Me and my grandma take meds, ooh (huh?)\n"
-  "None of this shit be new to me (nope)\n"
-  "Fuckin' my teacher, call it 'tutory (yuh)\n"
-  "Bought some red bottoms, cost hella Gs (huh?)\n"
-  "Fuck your airline, fuck your company (fuck it!)\n"
-  "Bitch, your breath smell like some cigarettes (cigarettes)\n"
-  "I'd rather fuck a bitch from the projects (yuh)\n"
-  "They kicked me out the plane off a percocet (brr)\n"
-  "Now Lil Pump flyin' private jet (yuh)\n"
-  "Everybody scream, \"Fuck WestJet\" (fuck 'em)\n"
-  "Lil Pump still sell that meth (yuh)\n"
-  "Hunnid on my wrist, sippin' on Tech (brr)\n"
-  "Fuck a lil bitch, make her pussy wet (what?)\n"
-  "\n"
-  "[Chorus]\n"
-  "Gucci gang, Gucci gang, Gucci gang, Gucci gang (Gucci gang)\n"
-  "Gucci gang, Gucci gang, Gucci gang (Gucci gang)\n"
-  "Spend three racks on a new chain (huh?)\n"
-  "My bitch love do cocaine, ooh (yuh)\n"
-  "I fuck a bitch, I forgot her name (brr)\n"
-  "I can't buy a bitch no wedding ring (huh?)\n"
-  "Rather go and buy Balmains (yuh)\n"
-  "Gucci gang, Gucci gang, Gucci gang (Gucci gang)\n"
-  "Gucci gang, Gucci gang, Gucci gang, Gucci gang\n"
-  "Gucci gang, Gucci gang, Gucci gang (Gucci gang)\n"
-  "Spend three racks on a new chain (huh?)\n"
-  "My bitch love do cocaine, ooh (brr)\n"
-  "I fuck a bitch, I forgot her name, yuh (yuh)\n"
-  "I can't buy no bitch no wedding ring, ooh (nope)\n"
-  "Rather go and buy Balmains, ayy (huh?)\n"
-  "Gucci gang, Gucci gang, Gucci gang (Gucci gang)\n\n";
+  "Gucci gang, Gucci gang, Gucci gang, Gucci gang (Gucci gang)\n";
 
 Interpreter::Interpreter(bool debug)
   : lst("null") {
@@ -109,6 +66,10 @@ bool Interpreter::add(std::string x, Function funct, std::string info) {
 }
 
 bool Interpreter::parse(std::string start, bool recursive) {
+  if(start == "\0" || start.empty()) {
+      lst = Ff;
+      return false;
+  }
   const std::string str = trim(start);
   std::string ret = "";
 

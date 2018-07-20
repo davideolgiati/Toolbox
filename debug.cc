@@ -193,7 +193,6 @@ TEST_CASE("Toolbox null Function Test", "[null]") {
 
   Interpreter I(true);
 
-  fail(&I, nullptr, "nullstring");
   fail(&I, "\0", "nullstring 2");
 
   std::cout << "\n\n";
