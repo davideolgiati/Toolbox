@@ -23,6 +23,7 @@ Interpreter::Interpreter(bool debug)
   infos[":nodebug"] = "finisce la sessione di debug";
   infos[":help"] = "mostra queste informazioni";
   infos[":exit"] = "esce dal programma";
+  infos[":memusage"] = "visualizza la memoria utilzzata dal programma";
   infos[":listvar"] = "mostra le variabili nel database";
   infos[":eskere"] = "let's get it!";
   infos["[<s>:<e>]"] = "genera un array contenet i valori da <s> a <e>";
@@ -152,6 +153,37 @@ void Interpreter::nodebug() {
 
 std::string Interpreter::getRet() {
   return lst;
+}
+
+int Interpreter::getMemUsage() {
+    int size = 0;
+    int bitCounter = 1;
+    
+    size += sizeof(tab);
+    size += sizeof(T);
+    size += sizeof(Tf);
+    size += sizeof(F);
+    size += sizeof(Ff);
+    size += sizeof(GG);
+    size += lst.size();
+    
+    for( const auto& n : functions ) {
+        size += n.first.size();
+        size += sizeof(Function);
+    }
+    
+    for( const auto& n : infos ) {
+        size += n.first.size();
+        size += n.second.size();
+    }
+    
+    for( const auto& n : varMap ) {
+        size += n.first.size();
+        size += n.second.value.size();
+        bitCounter++;
+    }
+    
+    return size + std::floor(bitCounter/8);
 }
 
 bool Interpreter::populate() {
@@ -509,13 +541,13 @@ std::string Interpreter::mapinfo() {
     out << std::left
         << std::setfill(' ')
         << std::setw(max_length + 1)
-        << "\e[7;32m ### " + iter->first
-        << " ### \e[0m " + iter->second;
+        << "\e[7;32m  " + iter->first
+        << " \e[0m " + iter->second;
 
     VoS.push_back(out.str());
     out.str("");
   }
-
+    
   std::sort(VoS.begin(), VoS.end(), std::greater<std::string>());
 
   for (auto iter : VoS) {

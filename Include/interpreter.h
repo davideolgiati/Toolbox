@@ -27,6 +27,7 @@ class Interpreter {
   void debug();
   void nodebug();
   std::string getRet();
+  int getMemUsage();
 
  private:
   struct Argument {

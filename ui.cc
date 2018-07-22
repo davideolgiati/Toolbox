@@ -2,6 +2,11 @@
 
 #include "Include/ui.h"
 
+#define KEY_UP 72
+#define KEY_DOWN 80
+#define KEY_LEFT 75
+#define KEY_RIGHT 77
+
 UI::UI(bool debug){
     Engine = new Interpreter(debug);
     if (!debug) {
@@ -27,6 +32,15 @@ void UI::Input(){
     std::getline(std::cin, str);
     if (str == ":exit"){
         stay = false;
+    } else if (str == ":memusage") {
+        double memusage = Engine->getMemUsage();
+        
+        if (1000 > memusage)
+            std::cout << "Total Memeory usage: " <<  memusage << " Bytes\n";
+        else if (1000000 > memusage)
+            std::cout << "Total Memeory usage: " << std::setprecision(2) <<  memusage/1000 << " KBytes\n";
+        else
+            std::cout << "Total Memeory usage: " << std::setprecision(2) <<  memusage/1000000 << " MBytes\n";
     } else {
         res = Engine->parse(str);
         std::cout << ((res) ? ("\n" + str + " = " + Engine->getRet()) :
