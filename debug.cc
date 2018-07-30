@@ -23,7 +23,7 @@ void pass(Interpreter* const I,
           std::string result,
           std::string desc = "") {
   I->parse(test);
-  REQUIRE_THAT(I->getRet(), Eq(FORMAT(result)));
+  REQUIRE_THAT(I->getRet().arg, Eq(FORMAT(result)));
   if ("" == desc) {
     OUTPUT(test);
   } else {
@@ -34,7 +34,7 @@ void pass(Interpreter* const I,
 TEST_CASE("Toolbox Function ciao Test", "[ciao]") {
   TITLE("Toolbox Function ciao Test");
 
-  Interpreter I(true);
+  Interpreter I;
     
   pass(&I, "Ciao(Davide)", "Ciao Davide");
   fail(&I, "Caio(Davide)");
@@ -50,7 +50,7 @@ TEST_CASE("Toolbox Function ciao Test", "[ciao]") {
 TEST_CASE("Toolbox String function Test", "[TsF]") {
   TITLE("Toolbox string funcions Test");
 
-  Interpreter I(true);
+  Interpreter I;
 
   fail(&I, "Length([1:10]");
   fail(&I, "Length([)");
@@ -75,7 +75,7 @@ TEST_CASE("Toolbox String function Test", "[TsF]") {
 TEST_CASE("Toolbox Array generation Test", "[array]") {
   TITLE("Toolbox array generation Test");
 
-  Interpreter I(true);
+  Interpreter I;
     
   fail(&I, "[a:b");
   fail(&I, "[1:3");
@@ -105,7 +105,7 @@ TEST_CASE("Toolbox Array generation Test", "[array]") {
 TEST_CASE("Toolbox math function Test", "[MF]") {
   TITLE("Toolbox math funcions Test");
 
-  Interpreter I(true);
+  Interpreter I;
 
   pass(&I, "+()", "0");
   pass(&I, "*()", "1");
@@ -127,7 +127,7 @@ TEST_CASE("Toolbox math function Test", "[MF]") {
 TEST_CASE("Toolbox function over Array Test", "[FoA]") {
   TITLE("Toolbox funcions over Array Test");
 
-  Interpreter I(true);
+  Interpreter I;
 
   pass(&I, "*([1:5])", "120");
   pass(&I, "+([1:10])", "55");
@@ -148,7 +148,7 @@ TEST_CASE("Toolbox function over Array Test", "[FoA]") {
 TEST_CASE("Toolbox const Test", "[FoA]") {
   TITLE("Toolbox const Test");
 
-  Interpreter I(true);
+  Interpreter I;
 
   pass(&I, "G", "6.673e-11");
   pass(&I, "e", "2.718281828459045235360287471352662498");
@@ -158,7 +158,7 @@ TEST_CASE("Toolbox const Test", "[FoA]") {
 }
 
 TEST_CASE("Toolbox Assignment Test", "[TA]") {
-  Interpreter I(true);
+  Interpreter I;
 
   SECTION("value assignament") {
     TITLE("Toolbox Assignament Test");
@@ -191,7 +191,7 @@ TEST_CASE("Toolbox Assignment Test", "[TA]") {
 TEST_CASE("Toolbox null Function Test", "[null]") {
   TITLE("Toolbox null Function Test");
 
-  Interpreter I(true);
+  Interpreter I;
 
   fail(&I, "\0", "nullstring 2");
 

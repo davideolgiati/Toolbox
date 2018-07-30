@@ -15,20 +15,24 @@
 #include "math.h"
 #include "string.h"
 
+struct Return {
+    std::string arg;
+    bool success;
+};
 
 typedef std::function< bool(std::string, std::string * const) > Function;
 typedef std::unordered_map<std::string, std::string> stringmap;
 
 class Interpreter {
  public:
-  Interpreter(bool debug = false);
+  Interpreter();
   bool add(std::string x, Function funct, std::string info = "");
   bool parse(std::string start, bool recursive = false);
   void debug();
   void nodebug();
-  std::string getRet();
+  Return getRet();
   int getMemUsage();
-
+    
  private:
   struct Argument {
     std::string value;
@@ -53,7 +57,7 @@ class Interpreter {
   varmap varMap;
   bool dbg;
   unsigned int tab;
-  std::string lst;
+  Return lst;
 
   static const char T[];
   static const char Tf[];

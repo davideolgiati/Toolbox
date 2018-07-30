@@ -50,6 +50,7 @@ bool djb2(std::string input, std::string * const output) {
   for (std::size_t i = input.length(); i--;) {
     hash = ((hash << 5) + hash) + input[i];
   }
+  *output = "funzione in costruzione";
   // stream << "0x" << std::hex << hash;
   // *output = stream.str();
   return true;

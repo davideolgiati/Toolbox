@@ -2,10 +2,6 @@
 
 #include "Include/interpreter.h"
 
-const char Interpreter::T[] = "true.";
-const char Interpreter::Tf[] = "\e[1;7;32mtrue.\e[0m";
-const char Interpreter::F[] = "false.";
-const char Interpreter::Ff[] = "\e[1;7;31mfalse.\e[0m";
 const char Interpreter::GG[] = "\n[Chorus]\n"
   "Gucci gang, Gucci gang, Gucci gang, Gucci gang (Gucci gang)\n"
   "Gucci gang, Gucci gang, Gucci gang (Gucci gang)\n"
@@ -17,8 +13,7 @@ const char Interpreter::GG[] = "\n[Chorus]\n"
   "Gucci gang, Gucci gang, Gucci gang (Gucci gang)\n"
   "Gucci gang, Gucci gang, Gucci gang, Gucci gang (Gucci gang)\n";
 
-Interpreter::Interpreter(bool debug)
-  : lst("null") {
+Interpreter::Interpreter(){
   infos[":debug"] = "comincia una sessione di debug";
   infos[":nodebug"] = "finisce la sessione di debug";
   infos[":help"] = "mostra queste informazioni";
@@ -68,33 +63,35 @@ bool Interpreter::add(std::string x, Function funct, std::string info) {
 
 bool Interpreter::parse(std::string start, bool recursive) {
   if(start == "\0" || start.empty()) {
-      lst = Ff;
+      lst.arg = "";
+      lst.success = false;
       return false;
   }
   const std::string str = trim(start);
   std::string ret = "";
 
   tab = 0;
-  lst = "";
+  lst.arg = "";
 
-  if (T == str) {
-    lst = Tf;
+  if ("true" == str) {
+    lst.success = true;
     return true;
   }
 
-  if (F == str) {
-    lst = Ff;
+  if ("false" == str) {
+    lst.success = false;
     return false;
   }
 
   if (":eskere" == str) {
-    lst = GG;
-    lst.append(Tf);
+    lst.arg = GG;
+    lst.success = true;
     return true;
   }
 
   if (":help" == str) {
-    lst = mapinfo();
+    lst.arg = mapinfo();
+    lst.success = true;
     return true;
   }
 
@@ -109,49 +106,53 @@ bool Interpreter::parse(std::string start, bool recursive) {
   }
 
   if (":listvar" == str) {
-    lst = varinfo();
+    lst.arg = varinfo();
+    lst.success = true;
     return true;
   }
 
   if (isFunct(str)) {
     if (!recursive) {
-      lst.append("\n");
-      lst.append(Tf);
+      lst.arg.append("\n");
+      lst.success = true;
     }
     return true;
   }
 
   if (isAssign(str)) {
     if (!recursive) {
-      lst.append("\n");
-      lst.append(Tf);
+      lst.arg.append("\n");
+      lst.success = true;
     }
     return true;
   }
 
   if (isAtoms(str)) {
     if (!recursive) {
-      lst.append("\n");
-      lst.append(Tf);
+      lst.arg.append("\n");
+      lst.success = true;
     }
     return true;
   }
 
-  lst = Ff;
+  lst.arg = "";
+  lst.success = false;
   return false;
 }
 
 void Interpreter::debug() {
-  lst = Tf;
+  lst.arg = "";
+  lst.success = true;
   dbg = true;
 }
 
 void Interpreter::nodebug() {
-  lst = Tf;
+  lst.arg = "";
+  lst.success = true;
   dbg = false;
 }
 
-std::string Interpreter::getRet() {
+Return Interpreter::getRet() {
   return lst;
 }
 
@@ -160,12 +161,8 @@ int Interpreter::getMemUsage() {
     int bitCounter = 1;
     
     size += sizeof(tab);
-    size += sizeof(T);
-    size += sizeof(Tf);
-    size += sizeof(F);
-    size += sizeof(Ff);
     size += sizeof(GG);
-    size += lst.size();
+    size += lst.arg.size();
     
     for( const auto& n : functions ) {
         size += n.first.size();
@@ -275,7 +272,7 @@ bool Interpreter::isFunct(std::string input) {
 
   tab--;
 
-  return functions[funct](lst, &lst);
+  return functions[funct](lst.arg, &lst.arg);
 }
 
 bool Interpreter::isAssign(std::string input) {
@@ -319,7 +316,8 @@ bool Interpreter::isAssign(std::string input) {
 
     if (varMap.find(Fvar) != varMap.end() &&
         !varMap[Fvar].write) {
-      lst = "la variabile " + Fvar + " è una costante\n" + Ff;
+      lst.arg = "la variabile " + Fvar + " è una costante\n";
+      lst.success = false;
       return false;
     }
 
@@ -381,13 +379,13 @@ bool Interpreter::isAtoms(const std::string input) {
     } else {
       if (isAtom(tokens[i])) {
         debug("running atomic check over token [" + tokens[i] + "]");
-        out += lst;
+        out += lst.arg;
         if (i != tokens.size() - 1)
           out += ", ";
         ret &= true;
       } else if (isFunct(tokens[i])) {
         debug("running function check over token [" + tokens[i] + "]");
-        out += lst;
+        out += lst.arg;
         if (i != tokens.size() - 1)
           out += ", ";
         ret &= true;
@@ -401,7 +399,7 @@ bool Interpreter::isAtoms(const std::string input) {
 
   tab--;
 
-  lst = (ret) ? out : "null";
+  lst.arg = (ret) ? out : "null";
   return ret;
 }
 
@@ -422,13 +420,13 @@ bool Interpreter::isAtom(const std::string args) {
 
   if (test) {
     if (varMap.find(args) == varMap.end())
-      lst = args;
+      lst.arg = args;
     else
       test &= parse(varMap[args].value, true);
-    debug("[" + lst + "] is an atom!");
+    debug("[" + lst.arg + "] is an atom!");
   } else {
     debug("[" + args + "] is not atom!");
-    lst = "null";
+    lst.arg = "";
   }
 
   tab--;
@@ -541,8 +539,8 @@ std::string Interpreter::mapinfo() {
     out << std::left
         << std::setfill(' ')
         << std::setw(max_length + 1)
-        << "\e[7;32m  " + iter->first
-        << " \e[0m " + iter->second;
+        << "  " + iter->first
+        << "  " + iter->second;
 
     VoS.push_back(out.str());
     out.str("");
@@ -555,7 +553,7 @@ std::string Interpreter::mapinfo() {
         << std::endl;
   }
 
-  return "\n\n" + out.str();
+  return "\n\n" + out.str() + "\n";
 }
 
 std::string Interpreter::varinfo() {
@@ -566,8 +564,8 @@ std::string Interpreter::varinfo() {
        iter != varMap.end();
        iter++) {
     out << ((iter->second.write) ?
-            (" \e[7m       \e[0m  ") :
-            (" \e[7m const \e[0m  "))
+            ("        ") :
+            (" const  "))
         << std::left
         << std::setfill(' ')
         << std::setw(20)

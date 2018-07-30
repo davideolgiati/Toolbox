@@ -5,6 +5,7 @@
 
 #include "interpreter.h"
 #include "debug.h"
+#include <string>
 
 class UI {
  public:
@@ -17,6 +18,7 @@ class UI {
  private:
     bool populate(Interpreter* const I);
     
+    std::vector<std::string> History;
     Interpreter * Engine;
     bool stay;
 };
