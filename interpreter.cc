@@ -209,7 +209,7 @@ bool Interpreter::populate() {
                   "rigira l'array");
     ret &= add("/",
                   divide,
-                  "divide un numero variabile di argomenti, eventualmente 0");
+                  "divide un numero variabile di argomenti >=0");
     ret &= add("OverArrayReverseStr",
                   OverArrayReverseStr,
                   "applica la funzione reverse su un array");
@@ -218,7 +218,7 @@ bool Interpreter::populate() {
                   "ordina un array");
     ret &= add("Sqrt",
                   squareroot,
-                  "ritorna la radice quadrata degli argomenti, eventualmente 1");
+                  "ritorna la radice quadrata degli argomenti >= 1");
     ret &= add("Binomial",
                   binomial,
                   "ritorna il binomiale degli argomenti, 2");
@@ -443,7 +443,7 @@ void Interpreter::debug(std::string str) {
       else
         tabs += " ";
     }
-    std::cout << tabs << str << std::endl;
+    printw("%s\n", (tabs + str).c_str());
   }
 }
 
@@ -531,7 +531,7 @@ int Interpreter::isBalanced(std::string str) {
 std::string Interpreter::mapinfo() {
   std::stringstream out;
   std::vector<std::string> VoS;
-  int max_length = 40;
+  int max_length = 25;
 
   for (stringmap::iterator iter = infos.begin();
        iter != infos.end();
@@ -553,12 +553,11 @@ std::string Interpreter::mapinfo() {
         << std::endl;
   }
 
-  return "\n\n" + out.str() + "\n";
+  return out.str() + "\n\n";
 }
 
 std::string Interpreter::varinfo() {
   std::stringstream out;
-  out << std::endl;
 
   for (varmap::iterator iter = varMap.begin();
        iter != varMap.end();
@@ -574,5 +573,5 @@ std::string Interpreter::varinfo() {
         << std::endl;
   }
 
-  return out.str().substr(0, out.str().length()-1);
+  return out.str() + "\n";
 }

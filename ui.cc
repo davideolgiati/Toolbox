@@ -21,9 +21,9 @@ UI::UI(bool debug){
                "  |_   _|__  ___| | _ ) _____ __\n"
                "    | |/ _ \\/ _ \\ | _ \\/ _ \\ \\ /\n"
                "    |_|\\___/\\___/_|___/\\___/_\\_\\\n\n"
-               "\nver \e[7;32m 0.3.4.20180308.2139 - Kaio-ken \e[0m\n"
-               "realizzato da THO in C++14 07/12/2017 - 22/02/2018\n"
-               "run \e[7m:help\e[0m for more!\n\n");
+               "\nver 0.3.5.20180730.1108 - Senzu Bean\n"
+               "realizzato da THO in C++14 07/12/2017 - 30/07/2018\n"
+               "run :help for more!\n\n");
         stay = true;
     }
 }
@@ -100,6 +100,7 @@ void UI::Input(){
         refresh();
     }while(ch != '\n');
     
+    printw("\n\n");
     History[pointer] = str;
     
     if (str == ":exit"){
@@ -108,18 +109,21 @@ void UI::Input(){
         double memusage = Engine->getMemUsage();
         
         if (1000 > memusage)
-            std::cout << "Total Memeory usage: " <<  memusage << " Bytes\n";
+            printw("Total Memeory usage: %.2f Bytes\n", memusage);
         else if (1000000 > memusage)
-            std::cout << "Total Memeory usage: " << std::setprecision(2) <<  memusage/1000 << " KBytes\n";
+            printw("Total Memeory usage: %.2f KBytes\n", memusage/1000);
         else
-            std::cout << "Total Memeory usage: " << std::setprecision(2) <<  memusage/1000000 << " MBytes\n";
+            printw("Total Memeory usage: %.2f MBytes\n", memusage/1000000);
     } else {
         res = Engine->parse(str);
         std::size_t found = str.find(" = ");
         if(found != std::string::npos)
-        str.erase(found, str.size());
+            str.erase(found, str.size());
         Return ret = Engine->getRet();
-        str = ((res) ? ("\n" + str + " = " + ret.arg) : "");
+        if(str[0] != ':')
+            str = ((res) ? (str + " = " + ret.arg) : (str + " = "));
+        else
+            str = ret.arg;
         printw(str.c_str());
         if(ret.success){
             attron(A_BOLD);
@@ -134,7 +138,7 @@ void UI::Input(){
             attroff(COLOR_PAIR(1));
             attroff(A_BOLD);
         }
-        printw("\n");
+        printw("\n\n");
     }
 }
 
@@ -144,6 +148,7 @@ bool UI::getState(){
 
 void UI::debug() {
     runTests();
+    getch();
 }
 
 UI::~UI() {

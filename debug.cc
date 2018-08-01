@@ -12,9 +12,11 @@ void fail(Interpreter* const I,
           std::string desc = "") {
   CHECK_FALSE(I->parse(test));
   if ("" == desc) {
-    OUTPUT(test + " -> false");
+    test += " -> false";
+    OUTPUT(test.c_str());
   } else {
-    OUTPUT(desc + " -> false");
+    desc += " -> false";
+    OUTPUT(desc.c_str());
   }
 }
 
@@ -23,11 +25,11 @@ void pass(Interpreter* const I,
           std::string result,
           std::string desc = "") {
   I->parse(test);
-  REQUIRE_THAT(I->getRet().arg, Eq(FORMAT(result)));
+  REQUIRE_THAT(I->getRet().arg, Eq(result));
   if ("" == desc) {
-    OUTPUT(test);
+    OUTPUT(test.c_str());
   } else {
-    OUTPUT(desc);
+    OUTPUT(desc.c_str());
   }
 }
 
@@ -44,7 +46,7 @@ TEST_CASE("Toolbox Function ciao Test", "[ciao]") {
   pass(&I, "ReverseArray(OverArrayCiao(Davide, Giorgio))",
        "Ciao Giorgio, Ciao Davide");
 
-  std::cout << "\n\n";
+  printw("\n\n");
 }
 
 TEST_CASE("Toolbox String function Test", "[TsF]") {
@@ -69,7 +71,7 @@ TEST_CASE("Toolbox String function Test", "[TsF]") {
   pass(&I, "ReverseArray(Davide, Giorgio, Vittorio)",
        "Vittorio, Giorgio, Davide");
 
-  std::cout << "\n\n";
+  printw("\n\n");
 }
 
 TEST_CASE("Toolbox Array generation Test", "[array]") {
@@ -99,7 +101,7 @@ TEST_CASE("Toolbox Array generation Test", "[array]") {
   pass(&I, "[1:5], Ciao(Davide)", "1, 2, 3, 4, 5, Ciao Davide");
   fail(&I, "[ciao(davide):ciao(pippo)]");
 
-  std::cout << "\n\n";
+  printw("\n\n");
 }
 
 TEST_CASE("Toolbox math function Test", "[MF]") {
@@ -121,7 +123,7 @@ TEST_CASE("Toolbox math function Test", "[MF]") {
   pass(&I, "+(*(), *())", "2");
   pass(&I, "+(*(0.5, 0.5), *(0.5, 0.5))", "0.5");
 
-  std::cout << "\n\n";
+  printw("\n\n");
 }
 
 TEST_CASE("Toolbox function over Array Test", "[FoA]") {
@@ -142,7 +144,7 @@ TEST_CASE("Toolbox function over Array Test", "[FoA]") {
   fail(&I, "*([1:10]ciao(Davide))");
   pass(&I, "*(+([1:10]), +([1:5]))", "825");
 
-  std::cout << "\n\n";
+  printw("\n\n");
 }
 
 TEST_CASE("Toolbox const Test", "[FoA]") {
@@ -154,7 +156,7 @@ TEST_CASE("Toolbox const Test", "[FoA]") {
   pass(&I, "e", "2.718281828459045235360287471352662498");
   pass(&I, "pi", "3.1415926535897932384626433832795028841968");
 
-  std::cout << "\n\n";
+  printw("\n\n");
 }
 
 TEST_CASE("Toolbox Assignment Test", "[TA]") {
@@ -184,7 +186,7 @@ TEST_CASE("Toolbox Assignment Test", "[TA]") {
   SECTION("constant check") {
     I.parse("!V = 3");
     fail(&I, "V = ReverseArray([1:4])", "!V = 3 , V = ReverseArray([1:4])");
-    std::cout << "\n\n";
+    printw("\n\n");
   }
 }
 
@@ -195,5 +197,5 @@ TEST_CASE("Toolbox null Function Test", "[null]") {
 
   fail(&I, "\0", "nullstring 2");
 
-  std::cout << "\n\n";
+  printw("\n\n");
 }

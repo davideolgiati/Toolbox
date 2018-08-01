@@ -13,12 +13,10 @@ bool sum(const std::string input, std::string * const output) {
   bool ret = true;
 
   if (size >= 0) {
-    long double out = 0;
-
-    for (std::vector<long double>::size_type i = 0; i < numbers.size(); i++) {
-      out += numbers[i];
-    }
-
+      long double out = 0;
+      for (auto number : numbers) {
+          out += number;
+      }
     *output = format(out);
   } else {
     *output = "null";
@@ -42,8 +40,8 @@ bool mul(const std::string input, std::string * const output) {
   if (0 <= size) {
     long double out = 1;
 
-    for (std::vector<long double>::size_type i = 0; i < numbers.size(); i++) {
-      out *= numbers[i];
+    for (auto number : numbers) {
+        out *= number;
     }
 
     *output = format(out);
@@ -68,11 +66,11 @@ bool divide(const std::string input, std::string * const output) {
   if (0 <= size) {
     long double out = 0;
 
-    for (std::vector<long double>::size_type i = 0; i < numbers.size(); i++) {
+    for (auto number : numbers) {
       if (0 == std::fabs(out)) {
-        out = numbers[i];
+        out = number;
       } else {
-        out /= numbers[i];
+        out /= number;
       }
     }
 
@@ -98,20 +96,17 @@ bool squareroot(const std::string input, std::string * const output) {
   if (0 <= size) {
     *output = "";
 
-    for (std::vector<long double>::size_type i = 0; i < numbers.size(); i++) {
-      if (0 != i && i != numbers.size()) {
+    for (auto number : numbers){
+      if ("" != *output) {
         * output += ", ";
       }
-      if (0 == numbers[i]) {
-        * output += std::to_string(numbers[i]);
-      } else if (0 > numbers[i]) {
-        *output = "null";
-        ret = false;
-        i = numbers.size() + 2;
-      } else {
-        * output += format(sqrt(numbers[i]));
+      if (0 == number) {
+        * output += std::to_string(number);
+      } else if (0 < number) {
+        * output += format(sqrt(number));
       }
     }
+    *output += "\n";
 
   } else {
     *output = "null";
@@ -134,20 +129,17 @@ bool logarithm(const std::string input, std::string * const output) {
   if (0 <= size) {
     *output = "";
 
-    for (std::vector<long double>::size_type i = 0; i < numbers.size(); i++) {
-      if (0 != i && i != numbers.size()) {
+  for (auto number : numbers){
+    if ("" != *output) {
         * output += ", ";
-      }
-      if (0 == numbers[i]) {
-        * output += std::to_string(numbers[i]);
-      } else if (0 > numbers[i]) {
-        *output = "null";
-        ret = false;
-        i = numbers.size() + 2;
-      } else {
-        * output += format(sqrt(numbers[i]));
-      }
     }
+    if (0 == number) {
+        * output += std::to_string(number);
+    } else if (0 < number) {
+        * output += format(log(number));
+    }
+  }
+  *output += "\n";
 
   } else {
     *output = "null";

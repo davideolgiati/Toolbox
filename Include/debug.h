@@ -4,10 +4,10 @@
 #define CATCH_CONFIG_RUNNER
 
 #include "interpreter.h"
+#include <ncurses.h>
 
-#define OUTPUT(x) std::cout << "\t\e[1;7;32m PASS \e[0m\t" << x << std::endl
-#define TITLE(x) std::cout << "\e[1;7;32m " << x << " \e[0m\n\n"
-#define FORMAT(x) x + "\n\e[1;7;32mtrue.\e[0m"
+#define OUTPUT(x) printw("PASS\t %s \n", x); refresh()
+#define TITLE(x) printw("%s\n\n", x); refresh()
 #define Eq Catch::Matchers::Equals
 
 extern void fail(Interpreter * const I, std::string test, std::string desc);

@@ -11,6 +11,7 @@
 #include <iomanip>
 #include <vector>
 #include <chrono>
+#include <ncurses.h>
 #include "tools.h"
 #include "math.h"
 #include "string.h"
