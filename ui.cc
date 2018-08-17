@@ -31,22 +31,36 @@ UI::UI(bool debug){
 void UI::Input(){
     bool res = true;
     std::string str = "";
-    unsigned long pointer = History.size();
+    unsigned long pointer = 0;
     unsigned long pos = History.size();
     
     int x, y;
     
-//  std::ios_base::sync_with_stdio(false);
-//  std::cin.tie(NULL);
-//  std::fflush(stdin);
     printw("[T] >> ");
-//  std::getline(std::cin, str);
     
     History.push_back("");
     int ch;
     do {
         ch = getch();
         switch(ch) {
+            case KEY_LEFT:
+                if(pointer > 0) {
+                    getyx(stdscr, y, x);
+                    move(y, x-1);
+                    pointer--;
+                } else {
+                    flash();
+                }
+                break;
+            case KEY_RIGHT:
+                if(pointer < str.size()) {
+                    getyx(stdscr, y, x);
+                    move(y, x+1);
+                    pointer++;
+                } else {
+                    flash();
+                }
+                break;
             case KEY_UP:
                 if(pos > 0) {
                     pos--;
@@ -60,6 +74,7 @@ void UI::Input(){
                         History[pointer] = str;
                     str = History[pos];
                     printw(str.c_str());
+                    pointer = str.size() - 1;
                 } else {
                     flash();
                 }
@@ -77,6 +92,7 @@ void UI::Input(){
                         History[pointer] = str;
                     str = History[pos];
                     printw(str.c_str());
+                    pointer = str.size() - 1;
                 } else {
                     flash();
                 }
@@ -87,21 +103,24 @@ void UI::Input(){
                     move(y, x-1);
                     delch();
                     str.pop_back();
+                    pointer--;
                 }
                 break;
             case '\n':
                 break;
             default:
-                if((ch < 255 && ch > 32) && ch != 127)
+                if((ch < 255 && ch > 32) && ch != 127) {
                     addch(ch);
                     str += ch;
+                    pointer++;
+                }
                 break;
         }
         refresh();
     }while(ch != '\n');
     
     printw("\n\n");
-    History[pointer] = str;
+    History[History.size() - 1] = str;
     
     if (str == ":exit"){
         stay = false;
