@@ -65,6 +65,7 @@ class Interpreter {
   static const char F[];
   static const char Ff[];
   static const char GG[];
+  static const char PF[];
 };
 
 #endif  // _INTERPRETER_H

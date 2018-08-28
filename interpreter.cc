@@ -13,6 +13,8 @@ const char Interpreter::GG[] = "\n[Chorus]\n"
   "Gucci gang, Gucci gang, Gucci gang (Gucci gang)\n"
   "Gucci gang, Gucci gang, Gucci gang, Gucci gang (Gucci gang)\n";
 
+const char Interpreter::PF[] = "\bananasupport is a god. by Andrea Fuscaldi\n";
+
 Interpreter::Interpreter(){
   infos[":debug"] = "comincia una sessione di debug";
   infos[":nodebug"] = "finisce la sessione di debug";
@@ -85,6 +87,12 @@ bool Interpreter::parse(std::string start, bool recursive) {
 
   if (":eskere" == str) {
     lst.arg = GG;
+    lst.success = true;
+    return true;
+  }
+
+  if (":ilPelatoEFigo" == str) {
+    lst.arg = PF;
     lst.success = true;
     return true;
   }
