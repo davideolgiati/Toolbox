@@ -109,7 +109,7 @@ void UI::Input(){
             case '\n':
                 break;
             default:
-                if((ch < 255 && ch > 32) && ch != 127) {
+                if(ch < 127 && ch > 31) {
                     addch(ch);
                     str += ch;
                     pointer++;
@@ -122,42 +122,48 @@ void UI::Input(){
     printw("\n\n");
     History[History.size() - 1] = str;
     
-    if (str == ":exit"){
-        stay = false;
-    } else if (str == ":memusage") {
-        double memusage = Engine->getMemUsage();
-        
-        if (1000 > memusage)
-            printw("Total Memeory usage: %.2f Bytes\n", memusage);
-        else if (1000000 > memusage)
-            printw("Total Memeory usage: %.2f KBytes\n", memusage/1000);
-        else
-            printw("Total Memeory usage: %.2f MBytes\n", memusage/1000000);
-    } else {
-        res = Engine->parse(str);
-        std::size_t found = str.find(" = ");
-        if(found != std::string::npos)
-            str.erase(found, str.size());
-        Return ret = Engine->getRet();
-        if(str[0] != ':')
-            str = ((res) ? (str + " = " + ret.arg) : (str + " = "));
-        else
-            str = ret.arg;
-        printw(str.c_str());
-        if(ret.success){
-            attron(A_BOLD);
-            attron(COLOR_PAIR(2));
-            printw(" true ");
-            attroff(COLOR_PAIR(2));
-            attroff(A_BOLD);
+    std::size_t comment = str.find("//");
+    if(pos != std::string::npos)
+        str = str.substr(0, comment);
+    
+    if(str != "") {
+        if (str == ":exit"){
+            stay = false;
+        } else if (str == ":memusage") {
+            double memusage = Engine->getMemUsage();
+            
+            if (1000 > memusage)
+                printw("Total Memeory usage: %.2f Bytes\n", memusage);
+            else if (1000000 > memusage)
+                printw("Total Memeory usage: %.2f KBytes\n", memusage/1000);
+            else
+                printw("Total Memeory usage: %.2f MBytes\n", memusage/1000000);
         } else {
-            attron(A_BOLD);
-            attron(COLOR_PAIR(1));
-            printw(" false ");
-            attroff(COLOR_PAIR(1));
-            attroff(A_BOLD);
+            res = Engine->parse(str);
+            std::size_t found = str.find(" = ");
+            if(found != std::string::npos)
+                str.erase(found, str.size());
+            Return ret = Engine->getRet();
+            if(str[0] != ':')
+                str = ((res) ? (str + " = " + ret.arg) : (str + " = "));
+            else
+                str = ret.arg;
+            printw(str.c_str());
+            if(ret.success){
+                attron(A_BOLD);
+                attron(COLOR_PAIR(2));
+                printw(" true ");
+                attroff(COLOR_PAIR(2));
+                attroff(A_BOLD);
+            } else {
+                attron(A_BOLD);
+                attron(COLOR_PAIR(1));
+                printw(" false ");
+                attroff(COLOR_PAIR(1));
+                attroff(A_BOLD);
+            }
+            printw("\n\n");
         }
-        printw("\n\n");
     }
 }
 

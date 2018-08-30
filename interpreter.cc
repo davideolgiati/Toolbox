@@ -376,31 +376,24 @@ bool Interpreter::isAtoms(const std::string input) {
   tab++;
   std::string current = "";
   std::vector<std::string>::size_type i = 0;
-  for (i = 0; i < tokens.size(); i++) {
-    current = expand(tokens[i]);
+  const std::vector<std::string>::size_type end = tokens.size() - 1;
+  for (auto tok : tokens) {
+    if(ret){
+        current = expand(tok);
 
-    if (0 != current.compare(tokens[i])) {
-      out += current;
-      if (i != tokens.size() - 1)
-        out += ", ";
-      ret &= true;
-    } else {
-      if (isAtom(tokens[i])) {
-        debug("running atomic check over token [" + tokens[i] + "]");
-        out += lst.arg;
-        if (i != tokens.size() - 1)
-          out += ", ";
-        ret &= true;
-      } else if (isFunct(tokens[i])) {
-        debug("running function check over token [" + tokens[i] + "]");
-        out += lst.arg;
-        if (i != tokens.size() - 1)
-          out += ", ";
-        ret &= true;
-      } else {
-        ret &= false;
-      }
+        if (0 != current.compare(tok)) {
+            out += compose(current, i, end);
+        } else {
+            if (isAtom(tok)) {
+                out += compose(lst.arg, i, end);
+            } else if (isFunct(tok)) {
+                out += compose(lst.arg, i, end);
+            } else {
+                ret = false;
+            }
+        }
     }
+    i++;
   }
 
   current = "";
@@ -409,6 +402,12 @@ bool Interpreter::isAtoms(const std::string input) {
 
   lst.arg = (ret) ? out : "null";
   return ret;
+}
+
+std::string Interpreter::compose(std::string x, std::vector<std::string>::size_type pos, std::vector<std::string>::size_type end){
+    if (pos != end)
+        x += ", ";
+    return x;
 }
 
 bool Interpreter::isAtom(const std::string args) {

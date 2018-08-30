@@ -49,6 +49,7 @@ class Interpreter {
   bool isAtom(const std::string str);
   void debug(std::string str);
   std::string expand(std::string x);
+  std::string compose(std::string x, std::vector<std::string>::size_type pos, std::vector<std::string>::size_type end);
   int isBalanced(std::string str);
   std::string mapinfo();
   std::string varinfo();
