@@ -18,18 +18,32 @@ Toolbox syntax can be described as "quite strange". Toolbox was inspired by two 
 
 ## Examples
 
+First examples are about ***collapsed arrays***.
+Here you can find out how to create one of them: 
+You press 5 keys and suddently toolbox creates for you a 42 int array.
+
+```
 [T] >> [1:42] // create a sequence starting from 1 to 42
 
 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42
 true
+```
 
+You can even store it, in case you need it in the future!
+
+```
 [T] >> V = [1:42] // create a sequence starting from 1 to 42 and stores it in a variable called V
 
 V = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42
 true
+```
 
+And then use it when you want and how you want!
+
+```
 [T] >> +(V) // create a sum of all numbers stored in V
 
 +(V)  = 903
 true
+```
 
