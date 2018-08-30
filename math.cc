@@ -9,18 +9,16 @@ bool sum(const std::string input, std::string * const output) {
   }
 
   std::vector<long double> numbers;
-  int size = MakeNumArray(input, &numbers);
-  bool ret = true;
+  const int size = MakeNumArray(input, &numbers);
+  bool ret = false;
+  *output = "null";
 
   if (size >= 0) {
       long double out = 0;
-      for (auto number : numbers) {
+      for (auto number : numbers)
           out += number;
-      }
-    *output = format(out);
-  } else {
-    *output = "null";
-    ret = false;
+      *output = format(out);
+      ret = true;
   }
 
   return ret;
@@ -28,26 +26,20 @@ bool sum(const std::string input, std::string * const output) {
 
 bool mul(const std::string input, std::string * const output) {
   if ("" == input) {
-    // If mul is called with no argument we will set output to "1"
     * output = "1";
-    return true;  // and true
+    return true;
   }
 
   std::vector<long double> numbers;
-  int size = MakeNumArray(input, &numbers);
-  bool ret = true;
+  const int size = MakeNumArray(input, &numbers);
+  bool ret = false;
+  *output = "null";
 
   if (0 <= size) {
     long double out = 1;
-
-    for (auto number : numbers) {
+    for (auto number : numbers)
         out *= number;
-    }
-
     *output = format(out);
-  } else {
-    *output = "null";
-    ret = false;
   }
 
   return ret;
@@ -60,26 +52,23 @@ bool divide(const std::string input, std::string * const output) {
   }
 
   std::vector<long double> numbers;
-  int size = MakeNumArray(input, &numbers);
-  bool ret = true;
+  const int size = MakeNumArray(input, &numbers);
+  bool ret = false;
+  *output = "null";
 
   if (0 <= size) {
     long double out = 0;
 
     for (auto number : numbers) {
-      if (0 == std::fabs(out)) {
+      if (0 == std::fabs(out))
         out = number;
-      } else {
+      else
         out /= number;
-      }
     }
-
+    
     *output = format(out);
-  } else {
-    *output = "null";
-    ret = false;
+    ret = true;
   }
-
   return ret;
 }
 
@@ -90,27 +79,25 @@ bool squareroot(const std::string input, std::string * const output) {
   }
 
   std::vector<long double> numbers;
-  int size = MakeNumArray(input, &numbers);
-  bool ret = true;
+  const int size = MakeNumArray(input, &numbers);
+  bool ret = false;
+  *output = "null";
 
   if (0 <= size) {
     *output = "";
 
     for (auto number : numbers){
-      if ("" != *output) {
+      if ("" != *output)
         * output += ", ";
-      }
-      if (0 == number) {
+        
+      if (0 == number)
         * output += std::to_string(number);
-      } else if (0 < number) {
+      else if (0 < number)
         * output += format(sqrt(number));
-      }
     }
+    
     *output += "\n";
-
-  } else {
-    *output = "null";
-    ret = false;
+    ret = true;
   }
 
   return ret;
@@ -123,29 +110,26 @@ bool logarithm(const std::string input, std::string * const output) {
   }
 
   std::vector<long double> numbers;
-  int size = MakeNumArray(input, &numbers);
-  bool ret = true;
+  const int size = MakeNumArray(input, &numbers);
+  bool ret = false;
+  *output = "null";
 
   if (0 <= size) {
-    *output = "";
-
-  for (auto number : numbers){
-    if ("" != *output) {
-        * output += ", ";
-    }
-    if (0 == number) {
-        * output += std::to_string(number);
-    } else if (0 < number) {
-        * output += format(log(number));
-    }
+      *output = "";
+      for (auto number : numbers){
+          if ("" != *output)
+              * output += ", ";
+          
+          if (0 == number)
+                * output += std::to_string(number);
+          else if (0 < number)
+                * output += format(log(number));
+          
+          *output += "\n";
+      }
+      ret = true;
   }
-  *output += "\n";
-
-  } else {
-    *output = "null";
-    ret = false;
-  }
-
+    
   return ret;
 }
 
@@ -155,8 +139,9 @@ bool binomial(const std::string input, std::string * const output) {
   }
 
   std::vector<long double> numbers;
-  int size = MakeNumArray(input, &numbers);
-  bool ret = true;
+  const int size = MakeNumArray(input, &numbers);
+  bool ret = false;
+  *output = "null";
 
   if (size == 2 && numbers[0] >= numbers[1]) {
     long double out = 0;
@@ -165,16 +150,13 @@ bool binomial(const std::string input, std::string * const output) {
     long double final1 = 1;
     long double final2 = (long double) recursiveFactorial((long long) numbers[1]);
 
-    for(long double i = temp1 + 1; i <= numbers[0]; i += 1) {
+    for(long double i = temp1 + 1; i <= numbers[0]; i += 1)
       final1 *= i;
-    }
 
     out = final1 / final2;
 
     *output = format(out);
-  } else {
-    *output = "null";
-    ret = false;
+    ret = true;
   }
 
   return ret;
