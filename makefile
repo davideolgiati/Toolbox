@@ -27,7 +27,6 @@ LDFLAG = $(CXXFLAGS) -lncurses
 # |_|   \__,_|\__|_| |_|___/
 
 ccsrc = $(wildcard *.cc)
-
 obj = $(ccsrc:.cc=.o)
 
 #   _____                      _ _
@@ -39,9 +38,9 @@ obj = $(ccsrc:.cc=.o)
 #                       | |
 #                       |_|
 
-CXX=g++
+CXX = g++
 EXEC = Toolbox_out
-RM=rm
+RM = rm
 
 #  __  __
 # |  \/  |
