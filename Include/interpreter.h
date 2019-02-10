@@ -17,30 +17,20 @@
 #include "string.h"
 
 struct Return {
-    std::string arg;
-    bool success;
+  std::string arg;
+  bool success;
 };
 
-typedef std::function< bool(std::string, std::string * const) > Function;
-typedef std::unordered_map<std::string, std::string> stringmap;
-
 class Interpreter {
- public:
-  Interpreter();
-  bool add(std::string x, Function funct, std::string info = "");
-  bool parse(std::string start, bool recursive = false);
-  void debug();
-  void nodebug();
-  Return getRet();
-  int getMemUsage();
-    
- private:
+private:
   struct Argument {
     std::string value;
     bool write;
   };
 
   typedef std::unordered_map<std::string, Argument> varmap;
+  typedef std::function<bool(std::string, std::string * const)> Function;
+  typedef std::unordered_map<std::string, std::string> stringmap;
 
   bool populate();
   bool isFunct(std::string input);
@@ -51,22 +41,29 @@ class Interpreter {
   std::string expand(std::string x);
   std::string compose(std::string x, std::vector<std::string>::size_type pos, std::vector<std::string>::size_type end);
   int isBalanced(std::string str);
-  std::string mapinfo();
-  std::string varinfo();
+  std::string mapinfo() const;
+  std::string varinfo() const;
 
-  std::unordered_map< std::string, Function > functions;
-  stringmap infos;
-  varmap varMap;
-  bool dbg;
-  unsigned int tab;
-  Return lst;
+  std::unordered_map<std::string, Function> _functions;
+  stringmap _infos;
+  varmap _varMap;
+  bool _dbg;
+  unsigned int _tab;
+  Return _lst;
 
-  static const char T[];
-  static const char Tf[];
-  static const char F[];
-  static const char Ff[];
-  static const char GG[];
-  static const char PF[];
+  static const char _T[];
+  static const char _Tf[];
+  static const char _F[];
+  static const char _Ff[];
+
+public:
+  Interpreter();
+  bool add(std::string x, Function funct, std::string info = "");
+  bool parse(std::string start, bool recursive = false);
+  void debug();
+  void nodebug();
+  Return getRet() const;
+  int getMemUsage() const;
 };
 
 #endif  // _INTERPRETER_H

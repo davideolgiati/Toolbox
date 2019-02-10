@@ -10,7 +10,8 @@
 
 #include "tools.h"
 
-extern long long recursiveFactorial(long long n);
+extern long long Factorial(long long n);
+extern bool FactorialHandler(const std::string input, std::string * const output);
 extern bool sum(const std::string input, std::string * const output);
 extern bool mul(const std::string input, std::string * const output);
 extern bool divide(const std::string input, std::string * const output);

@@ -65,7 +65,7 @@ bool divide(const std::string input, std::string * const output) {
       else
         out /= number;
     }
-    
+
     *output = format(out);
     ret = true;
   }
@@ -89,13 +89,11 @@ bool squareroot(const std::string input, std::string * const output) {
     for (auto number : numbers){
       if ("" != *output)
         * output += ", ";
-        
       if (0 == number)
         * output += std::to_string(number);
       else if (0 < number)
         * output += format(sqrt(number));
     }
-    
     *output += "\n";
     ret = true;
   }
@@ -119,17 +117,17 @@ bool logarithm(const std::string input, std::string * const output) {
       for (auto number : numbers){
           if ("" != *output)
               * output += ", ";
-          
+
           if (0 == number)
                 * output += std::to_string(number);
           else if (0 < number)
                 * output += format(log(number));
-          
+
           *output += "\n";
       }
       ret = true;
   }
-    
+
   return ret;
 }
 
@@ -148,7 +146,7 @@ bool binomial(const std::string input, std::string * const output) {
 
     long double temp1 = numbers[0] - numbers[1];
     long double final1 = 1;
-    long double final2 = (long double) recursiveFactorial((long long) numbers[1]);
+    long double final2 = (long double) Factorial((long long) numbers[1]);
 
     for(long double i = temp1 + 1; i <= numbers[0]; i += 1)
       final1 *= i;
@@ -221,9 +219,48 @@ bool binomial(const std::string input, std::string * const output) {
 // }
 
 
-long long recursiveFactorial(long long n) {
-  if(n > 1)
-    return n * recursiveFactorial(n - 1);
-  else
-    return 1;
+long long Factorial(long long n) {
+  long long ret = 1;
+
+  while (n > 1) {
+    ret *= n;
+    n--;
+  }
+
+  return ret;
+}
+
+
+bool FactorialHandler(const std::string input, std::string * const output) {
+  if ("" == input) {
+    return false;
+  }
+
+  std::vector<long double> numbers;
+  const int size = MakeNumArray(input, &numbers);
+  bool ret = false;
+  long long last = 1;
+  *output = "null";
+
+  if (size >= 1) {
+    *output = "";
+    for(int x = 0; x < size; x++) {
+
+      if (x > 0 && numbers[x] == numbers[x-1] + 1) {
+        last *= (long long) numbers[x];
+      } else if (x > 0 && numbers[x] == numbers[x-1] - 1) {
+        last /= (long long) numbers[x - 1];
+      } else {
+        last = Factorial((long long) numbers[x]);
+      }
+
+      *output += format(last);
+
+      if(x + 1 != size)
+        *output += ", ";
+    }
+    ret = true;
+  }
+
+  return ret;
 }

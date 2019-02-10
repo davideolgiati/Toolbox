@@ -2,48 +2,34 @@
 
 #include "Include/interpreter.h"
 
-const char Interpreter::GG[] = "\n[Chorus]\n"
-  "Gucci gang, Gucci gang, Gucci gang, Gucci gang (Gucci gang)\n"
-  "Gucci gang, Gucci gang, Gucci gang (Gucci gang)\n"
-  "Spend three racks on a new chain (yuh)\n"
-  "My bitch love do cocaine, ooh (ooh)\n"
-  "I fuck a bitch, I forgot her name (brr, yuh)\n"
-  "I can't buy a bitch no wedding ring (ooh)\n"
-  "Rather go and buy Balmains (brr)\n"
-  "Gucci gang, Gucci gang, Gucci gang (Gucci gang)\n"
-  "Gucci gang, Gucci gang, Gucci gang, Gucci gang (Gucci gang)\n";
-
-const char Interpreter::PF[] = "\bananasupport is a god. by Andrea Fuscaldi\n";
-
 Interpreter::Interpreter(){
-  infos[":debug"] = "comincia una sessione di debug";
-  infos[":nodebug"] = "finisce la sessione di debug";
-  infos[":help"] = "mostra queste informazioni";
-  infos[":exit"] = "esce dal programma";
-  infos[":memusage"] = "visualizza la memoria utilzzata dal programma";
-  infos[":listvar"] = "mostra le variabili nel database";
-  infos[":eskere"] = "let's get it!";
-  infos["[<s>:<e>]"] = "genera un array contenet i valori da <s> a <e>";
-  infos["(!)<var> = <args>"] = "aggiunge un valore come costante";
+  _infos["debug()"] = "comincia una sessione di debug";
+  _infos["nodebug()"] = "finisce la sessione di debug";
+  _infos["help()"] = "mostra queste informazioni";
+  _infos["exit()"] = "esce dal programma";
+  _infos["memusage()"] = "visualizza la memoria utilzzata dal programma";
+  _infos["listvar()"] = "mostra le variabili nel database";
+  _infos["[<s>:<e>]"] = "genera un array contenet i valori da <s> a <e>";
+  _infos["(!)<var> = <args>"] = "aggiunge un valore come costante";
 
   Argument base;
   base.write = false;
   base.value = "2.718281828459045235360287471352662498";
-  varMap["e"] = base;
+  _varMap["e"] = base;
   base.value = "3.1415926535897932384626433832795028841968";
-  varMap["pi"] = base;
+  _varMap["pi"] = base;
   base.value = "1.61803398874989484820";
-  varMap["phi"] = base;
+  _varMap["phi"] = base;
   base.value = "6.02205e+23";
-  varMap["avogadro"] = base;
+  _varMap["avogadro"] = base;
   base.value = "299792458";
-  varMap["speed_of_light"] = base;
+  _varMap["speed_of_light"] = base;
   base.value = "6.673e-11";
-  varMap["G"] = base;
+  _varMap["G"] = base;
   base.value = "0.3";
-  varMap["toolbox_ver"] = base;
+  _varMap["toolbox_ver"] = base;
   base.value = "THO";
-  varMap["toolbox_father"] = base;
+  _varMap["toolbox_father"] = base;
 #ifdef _WIN32
   base.value = "Windows";
 #elif __APPLE__
@@ -51,149 +37,136 @@ Interpreter::Interpreter(){
 #elif __linux__
   base.value = "Linux";
 #endif
-  varMap["toolbox_OS"] = base;
-  dbg = false;
-  tab = 0;
+  _varMap["toolbox_OS"] = base;
+  _dbg = false;
+  _tab = 0;
   populate();
 }
 
 bool Interpreter::add(std::string x, Function funct, std::string info) {
-  functions[x] = funct;
-  infos[x] = info;
-  return (functions.find(x) != functions.end());
+  _functions[x] = funct;
+  _infos[x] = info;
+  return (_functions.find(x) != _functions.end());
 }
 
 bool Interpreter::parse(std::string start, bool recursive) {
   if(start == "\0" || start.empty()) {
-      lst.arg = "";
-      lst.success = false;
+      _lst.arg = "";
+      _lst.success = false;
       return false;
   }
   const std::string str = trim(start);
   std::string ret = "";
 
-  tab = 0;
-  lst.arg = "";
+  _tab = 0;
+  _lst.arg = "";
 
   if ("true" == str) {
-    lst.success = true;
+    _lst.success = true;
     return true;
   }
 
   if ("false" == str) {
-    lst.success = false;
+    _lst.success = false;
     return false;
   }
 
-  if (":eskere" == str) {
-    lst.arg = GG;
-    lst.success = true;
+  if ("help()" == str) {
+    _lst.arg = mapinfo();
+    _lst.success = true;
     return true;
   }
 
-  if (":ilPelatoEFigo" == str) {
-    lst.arg = PF;
-    lst.success = true;
-    return true;
-  }
-
-  if (":help" == str) {
-    lst.arg = mapinfo();
-    lst.success = true;
-    return true;
-  }
-
-  if (":debug" == str) {
+  if ("debug()" == str) {
     debug();
     return true;
   }
 
-  if (":nodebug" == str) {
+  if ("nodebug()" == str) {
     nodebug();
     return true;
   }
 
-  if (":listvar" == str) {
-    lst.arg = varinfo();
-    lst.success = true;
+  if ("listvar()" == str) {
+    _lst.arg = varinfo();
+    _lst.success = true;
     return true;
   }
 
   if (isFunct(str)) {
     if (!recursive) {
-      lst.arg.append("\n");
-      lst.success = true;
+      _lst.arg.append("\n");
+      _lst.success = true;
     }
     return true;
   }
 
   if (isAssign(str)) {
     if (!recursive) {
-      lst.arg.append("\n");
-      lst.success = true;
+      _lst.arg.append("\n");
+      _lst.success = true;
     }
     return true;
   }
 
   if (isAtoms(str)) {
     if (!recursive) {
-      lst.arg.append("\n");
-      lst.success = true;
+      _lst.arg.append("\n");
+      _lst.success = true;
     }
     return true;
   }
 
-  lst.arg = "";
-  lst.success = false;
+  _lst.arg = "";
+  _lst.success = false;
   return false;
 }
 
 void Interpreter::debug() {
-  lst.arg = "";
-  lst.success = true;
-  dbg = true;
+  _lst.arg = "";
+  _lst.success = true;
+  _dbg = true;
 }
 
 void Interpreter::nodebug() {
-  lst.arg = "";
-  lst.success = true;
-  dbg = false;
+  _lst.arg = "";
+  _lst.success = true;
+  _dbg = false;
 }
 
-Return Interpreter::getRet() {
-  return lst;
+Return Interpreter::getRet() const {
+  return _lst;
 }
 
-int Interpreter::getMemUsage() {
+int Interpreter::getMemUsage() const {
     int size = 0;
     int bitCounter = 1;
-    
-    size += sizeof(tab);
-    size += sizeof(GG);
-    size += lst.arg.size();
-    
-    for( const auto& n : functions ) {
+
+    size += sizeof(_tab);
+    size += _lst.arg.size();
+
+    for (const auto& n : _functions) {
         size += n.first.size();
         size += sizeof(Function);
     }
-    
-    for( const auto& n : infos ) {
+
+    for (const auto& n : _infos) {
         size += n.first.size();
         size += n.second.size();
     }
-    
-    for( const auto& n : varMap ) {
+
+    for (const auto& n : _varMap) {
         size += n.first.size();
         size += n.second.value.size();
         bitCounter++;
     }
-    
+
     return size + std::floor(bitCounter/8);
 }
 
 bool Interpreter::populate() {
     bool ret = true;
-    
+
     ret &= add("Ciao",
                   ciao,
                   "scrive Ciao <arg>");
@@ -230,6 +203,9 @@ bool Interpreter::populate() {
     ret &= add("Binomial",
                   binomial,
                   "ritorna il binomiale degli argomenti, 2");
+    ret &= add("Factorial",
+               FactorialHandler,
+               "ritorna il fattoriale degli argomenti >= 1");
     // I.add("log",
     //       logarithm,
     //       "ritorna il logaritmo naturale degli argomenti, eventualmente 1");
@@ -239,7 +215,7 @@ bool Interpreter::populate() {
     // I.add("log10",
     //       logarithm10,
     //       "ritorna il logaritmo base 10 degli argomenti, eventualmente 1");
-    
+
     return ret;
 }
 
@@ -252,7 +228,7 @@ bool Interpreter::isFunct(std::string input) {
 
   debug("checking for function [" + input + "]");
 
-  tab++;
+  _tab++;
 
   if (std::string::npos == openP ||
       std::string::npos == closeP ||
@@ -273,14 +249,14 @@ bool Interpreter::isFunct(std::string input) {
     return false;
   }
 
-  if (functions.find(funct) == functions.end()) {
+  if (_functions.find(funct) == _functions.end()) {
       debug("[" + funct + "] is not recognasied as a valid function");
       return false;
   }
 
-  tab--;
+  _tab--;
 
-  return functions[funct](lst.arg, &lst.arg);
+  return _functions[funct](_lst.arg, &_lst.arg);
 }
 
 bool Interpreter::isAssign(std::string input) {
@@ -322,15 +298,15 @@ bool Interpreter::isAssign(std::string input) {
     const bool RW = (tok[0][0] != '!');
     std::string Fvar = trim((tok[0][0] != '!') ? tok[0] : tok[0].substr(1));
 
-    if (varMap.find(Fvar) != varMap.end() &&
-        !varMap[Fvar].write) {
-      lst.arg = "la variabile " + Fvar + " è una costante\n";
-      lst.success = false;
+    if (_varMap.find(Fvar) != _varMap.end() &&
+        !_varMap[Fvar].write) {
+      _lst.arg = "la variabile " + Fvar + " è una costante\n";
+      _lst.success = false;
       return false;
     }
 
-    varMap[Fvar].value = trim(tok[1]);
-    varMap[Fvar].write = RW;
+    _varMap[Fvar].value = trim(tok[1]);
+    _varMap[Fvar].write = RW;
     return true;
   }
 
@@ -373,7 +349,7 @@ bool Interpreter::isAtoms(const std::string input) {
 
   free(dup);
 
-  tab++;
+  _tab++;
   std::string current = "";
   std::vector<std::string>::size_type i = 0;
   const std::vector<std::string>::size_type end = tokens.size() - 1;
@@ -385,9 +361,9 @@ bool Interpreter::isAtoms(const std::string input) {
             out += compose(current, i, end);
         } else {
             if (isAtom(tok)) {
-                out += compose(lst.arg, i, end);
+                out += compose(_lst.arg, i, end);
             } else if (isFunct(tok)) {
-                out += compose(lst.arg, i, end);
+                out += compose(_lst.arg, i, end);
             } else {
                 ret = false;
             }
@@ -398,9 +374,9 @@ bool Interpreter::isAtoms(const std::string input) {
 
   current = "";
 
-  tab--;
+  _tab--;
 
-  lst.arg = (ret) ? out : "null";
+  _lst.arg = (ret) ? out : "null";
   return ret;
 }
 
@@ -412,7 +388,7 @@ std::string Interpreter::compose(std::string x, std::vector<std::string>::size_t
 
 bool Interpreter::isAtom(const std::string args) {
   debug("checking if [" + args + "] is atomic");
-  tab++;
+  _tab++;
 
   bool test = true;
   size_t i = 0;
@@ -426,25 +402,25 @@ bool Interpreter::isAtom(const std::string args) {
   }
 
   if (test) {
-    if (varMap.find(args) == varMap.end())
-      lst.arg = args;
+    if (_varMap.find(args) == _varMap.end())
+      _lst.arg = args;
     else
-      test &= parse(varMap[args].value, true);
-    debug("[" + lst.arg + "] is an atom!");
+      test &= parse(_varMap[args].value, true);
+    debug("[" + _lst.arg + "] is an atom!");
   } else {
     debug("[" + args + "] is not atom!");
-    lst.arg = "";
+    _lst.arg = "";
   }
 
-  tab--;
+  _tab--;
 
   return test;
 }
 
 void Interpreter::debug(std::string str) {
-  if (dbg) {
+  if (_dbg) {
     std::string tabs = "";
-    for (unsigned int i = 0; i < tab; i++) {
+    for (unsigned int i = 0; i < _tab; i++) {
       if (9 < i)
         tabs += "  ";
       else
@@ -535,24 +511,22 @@ int Interpreter::isBalanced(std::string str) {
   return i;
 }
 
-std::string Interpreter::mapinfo() {
+std::string Interpreter::mapinfo() const {
   std::stringstream out;
   std::vector<std::string> VoS;
   int max_length = 25;
 
-  for (stringmap::iterator iter = infos.begin();
-       iter != infos.end();
-       iter++) {
+  for (auto iter : _infos) {
     out << std::left
         << std::setfill(' ')
         << std::setw(max_length + 1)
-        << "  " + iter->first
-        << "  " + iter->second;
+        << "  " + iter.first
+        << "  " + iter.second;
 
     VoS.push_back(out.str());
     out.str("");
   }
-    
+
   std::sort(VoS.begin(), VoS.end(), std::greater<std::string>());
 
   for (auto iter : VoS) {
@@ -563,20 +537,18 @@ std::string Interpreter::mapinfo() {
   return out.str() + "\n\n";
 }
 
-std::string Interpreter::varinfo() {
+std::string Interpreter::varinfo() const {
   std::stringstream out;
 
-  for (varmap::iterator iter = varMap.begin();
-       iter != varMap.end();
-       iter++) {
-    out << ((iter->second.write) ?
+  for (auto iter : _varMap) {
+    out << ((iter.second.write) ?
             ("        ") :
             (" const  "))
         << std::left
         << std::setfill(' ')
         << std::setw(20)
-        << iter->first
-        << iter->second.value
+        << iter.first
+        << iter.second.value
         << std::endl;
   }
 
