@@ -1,6 +1,6 @@
 //  Copyright Davide Olgiati 2018
 
-#include "Include/ui.h"
+#include "ui.h"
 #include <ncurses.h>
 
 UI::UI(bool debug){
@@ -172,8 +172,8 @@ bool UI::getState(){
 }
 
 void UI::debug() {
-    runTests();
-    getch();
+    // runTests();
+    // getch();
 }
 
 UI::~UI() {

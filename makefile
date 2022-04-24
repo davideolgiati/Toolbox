@@ -7,15 +7,7 @@
 #                  __/ |
 #                 |___/
 
-CXXFLAGS = -march=native -mtune=native -O3 -pipe -Wall -Wredundant-decls \
--Wcast-align -Wmissing-declarations -Wmissing-include-dirs -Wswitch-enum \
--Wswitch-default -Wextra -Werror -Winvalid-pch -Wredundant-decls \
--Wmissing-prototypes -Wformat=2 -Wmissing-format-attribute -Wformat-nonliteral \
--fPIC -g -fstack-protector -fvisibility=hidden \
--Wno-unused-function -Wno-unused-label -Wpointer-arith -Wreturn-type \
--Wsign-compare -Wmultichar -Wformat-nonliteral -Winit-self -Wuninitialized \
--Wno-deprecated -Wformat-security -Weffc++ -fsanitize=address -fPIE \
--fno-omit-frame-pointer -std=c++17
+CXXFLAGS = -std=c++17
 
 LDFLAG = $(CXXFLAGS) -lncurses
 
@@ -26,8 +18,8 @@ LDFLAG = $(CXXFLAGS) -lncurses
 # | |  | (_| | |_| | | \__ \
 # |_|   \__,_|\__|_| |_|___/
 
-ccsrc = $(wildcard *.cc)
-obj = $(ccsrc:.cc=.o)
+ccsrc = $(wildcard */*.cpp)
+obj = $(ccsrc:.cpp=.o)
 
 #   _____                      _ _
 #  / ____|                    (_) |
@@ -39,7 +31,7 @@ obj = $(ccsrc:.cc=.o)
 #                       |_|
 
 CXX = g++
-EXEC = Toolbox_out
+EXEC = bin/toolbox
 RM = rm
 
 #  __  __

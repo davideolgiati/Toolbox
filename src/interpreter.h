@@ -3,6 +3,10 @@
 #ifndef _INTERPRETER_H
 #define _INTERPRETER_H
 
+#include <cstring>
+#include <stdio.h>
+#include <string.h>
+
 #include <iostream>
 #include <unordered_map>
 #include <string>
@@ -13,8 +17,8 @@
 #include <chrono>
 #include <ncurses.h>
 #include "tools.h"
-#include "math.h"
-#include "string.h"
+//#include "math.h"
+//#include "string.h"
 
 struct Return {
   std::string arg;

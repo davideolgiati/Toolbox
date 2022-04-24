@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <string>
+#include <cstring>
 #include <vector>
 
 extern bool numerize(const char* x, long double * const d);

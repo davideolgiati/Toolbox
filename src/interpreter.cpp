@@ -1,43 +1,17 @@
 // Copyright 2018 Davide Olgiati
 
-#include "Include/interpreter.h"
+#include "interpreter.h"
 
 Interpreter::Interpreter(){
-  _infos["debug()"] = "comincia una sessione di debug";
-  _infos["nodebug()"] = "finisce la sessione di debug";
-  _infos["help()"] = "mostra queste informazioni";
-  _infos["exit()"] = "esce dal programma";
-  _infos["memusage()"] = "visualizza la memoria utilzzata dal programma";
-  _infos["listvar()"] = "mostra le variabili nel database";
-  _infos["[<s>:<e>]"] = "genera un array contenet i valori da <s> a <e>";
-  _infos["(!)<var> = <args>"] = "aggiunge un valore come costante";
+  // _infos["debug()"] = "comincia una sessione di debug";
+  // _infos["nodebug()"] = "finisce la sessione di debug";
+  // _infos["help()"] = "mostra queste informazioni";
+  // _infos["exit()"] = "esce dal programma";
+  // _infos["memusage()"] = "visualizza la memoria utilzzata dal programma";
+  // _infos["listvar()"] = "mostra le variabili nel database";
+  // _infos["[<s>:<e>]"] = "genera un array contenet i valori da <s> a <e>";
+  // _infos["(!)<var> = <args>"] = "aggiunge un valore come costante";
 
-  Argument base;
-  base.write = false;
-  base.value = "2.718281828459045235360287471352662498";
-  _varMap["e"] = base;
-  base.value = "3.1415926535897932384626433832795028841968";
-  _varMap["pi"] = base;
-  base.value = "1.61803398874989484820";
-  _varMap["phi"] = base;
-  base.value = "6.02205e+23";
-  _varMap["avogadro"] = base;
-  base.value = "299792458";
-  _varMap["speed_of_light"] = base;
-  base.value = "6.673e-11";
-  _varMap["G"] = base;
-  base.value = "0.3";
-  _varMap["toolbox_ver"] = base;
-  base.value = "THO";
-  _varMap["toolbox_father"] = base;
-#ifdef _WIN32
-  base.value = "Windows";
-#elif __APPLE__
-  base.value = "MacOS";
-#elif __linux__
-  base.value = "Linux";
-#endif
-  _varMap["toolbox_OS"] = base;
   _dbg = false;
   _tab = 0;
   populate();
@@ -167,45 +141,45 @@ int Interpreter::getMemUsage() const {
 bool Interpreter::populate() {
     bool ret = true;
 
-    ret &= add("Ciao",
-                  ciao,
-                  "scrive Ciao <arg>");
-    ret &= add("ReverseStr",
-                  ReverseStr,
-                  "scrive <arg> al contrario");
-    ret &= add("Length",
-                  length,
-                  "ritorna la lunghrzza di <arg>");
-    ret &= add("+",
-                  sum,
-                  "somma un numero variabile di argomenti >= 0");
-    ret &= add("*",
-                  mul,
-                  "moltiplica un numero variabile di argomenti >= 0");
-    ret &= add("OverArrayCiao",
-                  OverArrayCiao,
-                  "applica la funzione \"ciao\" su un array");
-    ret &= add("ReverseArray",
-                  ReverseArray,
-                  "rigira l'array");
-    ret &= add("/",
-                  divide,
-                  "divide un numero variabile di argomenti >=0");
-    ret &= add("OverArrayReverseStr",
-                  OverArrayReverseStr,
-                  "applica la funzione reverse su un array");
-    ret &= add("OrderArray",
-                  OrderArray,
-                  "ordina un array");
-    ret &= add("Sqrt",
-                  squareroot,
-                  "ritorna la radice quadrata degli argomenti >= 1");
-    ret &= add("Binomial",
-                  binomial,
-                  "ritorna il binomiale degli argomenti, 2");
-    ret &= add("Factorial",
-               FactorialHandler,
-               "ritorna il fattoriale degli argomenti >= 1");
+    // ret &= add("Ciao",
+    //               ciao,
+    //               "scrive Ciao <arg>");
+    // ret &= add("ReverseStr",
+    //               ReverseStr,
+    //               "scrive <arg> al contrario");
+    // ret &= add("Length",
+    //               length,
+    //               "ritorna la lunghrzza di <arg>");
+    // ret &= add("+",
+    //               sum,
+    //               "somma un numero variabile di argomenti >= 0");
+    // ret &= add("*",
+    //               mul,
+    //               "moltiplica un numero variabile di argomenti >= 0");
+    // ret &= add("OverArrayCiao",
+    //               OverArrayCiao,
+    //               "applica la funzione \"ciao\" su un array");
+    // ret &= add("ReverseArray",
+    //               ReverseArray,
+    //               "rigira l'array");
+    // ret &= add("/",
+    //               divide,
+    //               "divide un numero variabile di argomenti >=0");
+    // ret &= add("OverArrayReverseStr",
+    //               OverArrayReverseStr,
+    //               "applica la funzione reverse su un array");
+    // ret &= add("OrderArray",
+    //               OrderArray,
+    //               "ordina un array");
+    // ret &= add("Sqrt",
+    //               squareroot,
+    //               "ritorna la radice quadrata degli argomenti >= 1");
+    // ret &= add("Binomial",
+    //               binomial,
+    //               "ritorna il binomiale degli argomenti, 2");
+    // ret &= add("Factorial",
+    //            FactorialHandler,
+    //            "ritorna il fattoriale degli argomenti >= 1");
     // I.add("log",
     //       logarithm,
     //       "ritorna il logaritmo naturale degli argomenti, eventualmente 1");
