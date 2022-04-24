@@ -33,11 +33,7 @@ private:
   };
 
   typedef std::unordered_map<std::string, Argument> varmap;
-  typedef std::function<bool(std::string, std::string * const)> Function;
-  typedef std::unordered_map<std::string, std::string> stringmap;
 
-  bool populate();
-  bool isFunct(std::string input);
   bool isAssign(std::string input);
   bool isAtoms(const std::string input);
   bool isAtom(const std::string str);
@@ -49,7 +45,6 @@ private:
   std::string varinfo() const;
 
   std::unordered_map<std::string, Function> _functions;
-  stringmap _infos;
   varmap _varMap;
   bool _dbg;
   unsigned int _tab;
@@ -61,7 +56,7 @@ private:
   static const char _Ff[];
 
 public:
-  Interpreter();
+  Interpreter()
   bool add(std::string x, Function funct, std::string info = "");
   bool parse(std::string start, bool recursive = false);
   void debug();
